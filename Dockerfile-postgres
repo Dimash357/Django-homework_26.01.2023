@@ -1,0 +1,13 @@
+FROM python:3.10
+ENV PYTHONUNBUFFERED 1
+
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
+RUN mkdir /web_build
+WORKDIR /web_build  
+COPY requirements.txt /web_build/
+RUN pip3 install -r requirements.txt
+ADD . /web_build/
+COPY . /web_build/
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
